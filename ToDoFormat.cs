@@ -29,7 +29,7 @@ namespace TodoClassification
         public ToDoFormat()
         {
             DisplayName = "ToDo Text"; //human readable version of the name
-            BackgroundOpacity = 1;
+            BackgroundOpacity = 0;
             //BackgroundColor = Colors.Orange;
             ForegroundColor = Colors.OrangeRed;
         }
