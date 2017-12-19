@@ -30,8 +30,8 @@ namespace TodoClassification
         {
             DisplayName = "ToDo Text"; //human readable version of the name
             BackgroundOpacity = 0;
-            //BackgroundColor = Colors.Orange;
             ForegroundColor = Colors.OrangeRed;
+            //BackgroundColor = Colors.Orange;
         }
     }
 }

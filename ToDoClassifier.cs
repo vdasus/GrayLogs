@@ -21,7 +21,7 @@ namespace TodoClassification
     /// <summary>
     /// ToDo tag classifier finds every instance of ToDoTag within a given span.
     /// </summary>
-    class ToDoClassifier : IClassifier
+    internal class ToDoClassifier : IClassifier
     {
         private readonly IClassificationType _classificationType;
         private readonly ITagAggregator<ToDoTag> _tagger;

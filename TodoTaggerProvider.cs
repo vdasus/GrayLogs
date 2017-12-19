@@ -23,7 +23,7 @@ namespace TodoClassification
     [Export(typeof(ITaggerProvider))]
     [ContentType("code")]
     [TagType(typeof(ToDoTag))]
-    class ToDoTaggerProvider : ITaggerProvider
+    internal class ToDoTaggerProvider : ITaggerProvider
     {
         /// <summary>
         /// Creates an instance of our custom TodoTagger for a given buffer.
