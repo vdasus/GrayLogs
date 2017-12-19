@@ -12,20 +12,19 @@
 using System.Windows;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
-using ToDoGlyphFactory;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
     /// This class implements IGlyphFactory, which provides the visual
     /// element that will appear in the glyph margin.
     /// </summary>
-    internal class ToDoGlyphFactory : IGlyphFactory
+    internal class GrayLogGlyphFactory : IGlyphFactory
     {
 
         public UIElement GenerateGlyph(IWpfTextViewLine line, IGlyphTag tag)
         {
-            return new TodoGlyph();
+            return new GrayLogGlyph();
         }
     }
 }

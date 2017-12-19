@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following  
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ToDoGlyphFactory")]
-[assembly: AssemblyDescription("Highlight any instances of 'ToDo' and any add a glyph to the line")]
+[assembly: AssemblyTitle("GrayLogGlyphFactory")]
+[assembly: AssemblyDescription("Highlight any instances of 'GrayLog' and any add a glyph to the line")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ToDoGlyphFactory")]
+[assembly: AssemblyProduct("GrayLogGlyphFactory")]
 [assembly: AssemblyCopyright("Copyright © Microsoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

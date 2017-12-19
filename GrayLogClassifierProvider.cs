@@ -4,19 +4,19 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
     /// Export a <see cref="IClassifierProvider"/>
     /// </summary>
     [Export(typeof(IClassifierProvider))]
     [ContentType("code")]
-    internal class ToDoClassifierProvider : IClassifierProvider
+    internal class GrayLogClassifierProvider : IClassifierProvider
     {
 #pragma warning disable 0649 //"warning CS0649 : field is never assigned to"
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("todo")]
-        internal ClassificationTypeDefinition ToDoClassificationType;
+        [Name("GrayLog")]
+        internal ClassificationTypeDefinition GrayLogClassificationType;
 
         [Import]
         internal IClassificationTypeRegistryService ClassificationRegistry;
@@ -27,10 +27,10 @@ namespace TodoClassification
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
-            IClassificationType classificationType = ClassificationRegistry.GetClassificationType("todo");
+            IClassificationType classificationType = ClassificationRegistry.GetClassificationType("GrayLog");
 
-            var tagAggregator = TagAggregatorFactory.CreateTagAggregator<ToDoTag>(buffer);
-            return new ToDoClassifier(tagAggregator, classificationType);
+            var tagAggregator = TagAggregatorFactory.CreateTagAggregator<GrayLogTag>(buffer);
+            return new GrayLogClassifier(tagAggregator, classificationType);
         }
     }
 }

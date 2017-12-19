@@ -16,35 +16,35 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
-    /// Empty ToDoTag class.
+    /// Empty GrayLogTag class.
     /// </summary>
-    internal class ToDoTag : IGlyphTag { }
+    internal class GrayLogTag : IGlyphTag { }
 
     /// <summary>
-    /// This class implements ITagger for ToDoTag.  It is responsible for creating
-    /// ToDoTag TagSpans, which our GlyphFactory will then create glyphs for.
+    /// This class implements ITagger for GrayLogTag.  It is responsible for creating
+    /// GrayLogTag TagSpans, which our GlyphFactory will then create glyphs for.
     /// </summary>
-    internal class ToDoTagger : ITagger<ToDoTag>
+    internal class GrayLogTagger : ITagger<GrayLogTag>
     {
         
         private const string SEARCH_TEXT = "log.,_log.,logger.,_logger.";
 
         /// <summary>
-        /// This method creates ToDoTag TagSpans over a set of SnapshotSpans.
+        /// This method creates GrayLogTag TagSpans over a set of SnapshotSpans.
         /// </summary>
         /// <param name="spans">A set of spans we want to get tags for.</param>
-        /// <returns>The list of ToDoTag TagSpans.</returns>
-        IEnumerable<ITagSpan<ToDoTag>> ITagger<ToDoTag>.GetTags(NormalizedSnapshotSpanCollection spans)
+        /// <returns>The list of GrayLogTag TagSpans.</returns>
+        IEnumerable<ITagSpan<GrayLogTag>> ITagger<GrayLogTag>.GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            //todo: implement tagging
+            //GrayLog: implement tagging
             return from curSpan in spans
                 where GetSearchTextPos(curSpan) > -1
                 select new SnapshotSpan(curSpan.Snapshot, new Span(curSpan.Start, curSpan.Length))
-                into todoSpan
-                select new TagSpan<ToDoTag>(todoSpan, new ToDoTag());
+                into GrayLogSpan
+                select new TagSpan<GrayLogTag>(GrayLogSpan, new GrayLogTag());
         }
 
         private static int GetSearchTextPos(SnapshotSpan span)

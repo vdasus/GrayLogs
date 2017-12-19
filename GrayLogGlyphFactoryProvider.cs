@@ -14,17 +14,17 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
     /// Export a <see cref="IGlyphFactoryProvider"/>
     /// </summary>
     [Export(typeof(IGlyphFactoryProvider))]
-    [Name("ToDoGlyph")]
+    [Name("GrayLogGlyph")]
     [Order(Before = "VsTextMarker")]
     [ContentType("code")]
-    [TagType(typeof(ToDoTag))]
-    internal sealed class ToDoGlyphFactoryProvider : IGlyphFactoryProvider
+    [TagType(typeof(GrayLogTag))]
+    internal sealed class GrayLogGlyphFactoryProvider : IGlyphFactoryProvider
     {
         /// <summary>
         /// This method creates an instance of our custom glyph factory for a given text view.
@@ -34,7 +34,7 @@ namespace TodoClassification
         /// <returns>An instance of our custom glyph factory.</returns>
         public IGlyphFactory GetGlyphFactory(IWpfTextView view, IWpfTextViewMargin margin)
         {
-            return new ToDoGlyphFactory();
+            return new GrayLogGlyphFactory();
         }
     }
 }

@@ -16,27 +16,27 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
-    /// ToDo tag classifier finds every instance of ToDoTag within a given span.
+    /// GrayLog tag classifier finds every instance of GrayLogTag within a given span.
     /// </summary>
-    internal class ToDoClassifier : IClassifier
+    internal class GrayLogClassifier : IClassifier
     {
         private readonly IClassificationType _classificationType;
-        private readonly ITagAggregator<ToDoTag> _tagger;
+        private readonly ITagAggregator<GrayLogTag> _tagger;
 
-        internal ToDoClassifier(ITagAggregator<ToDoTag> tagger, IClassificationType todoType)
+        internal GrayLogClassifier(ITagAggregator<GrayLogTag> tagger, IClassificationType GrayLogType)
         {
             _tagger = tagger;
-            _classificationType = todoType;
+            _classificationType = GrayLogType;
         }
 
         /// <summary>
-        /// Get every ToDoTag instance within the given span. Generally, the span in 
+        /// Get every GrayLogTag instance within the given span. Generally, the span in 
         /// question is the displayed portion of the file currently open in the Editor
         /// </summary>
-        /// <param name="span">The span of text that will be searched for ToDo tags</param>
+        /// <param name="span">The span of text that will be searched for GrayLog tags</param>
         /// <returns>A list of every relevant tag in the given span</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
@@ -44,7 +44,7 @@ namespace TodoClassification
 
             return tags
                 .Select(tagSpan => tagSpan.Span.GetSpans(span.Snapshot).First())
-                .Select(todoSpan => new ClassificationSpan(todoSpan, _classificationType))
+                .Select(GrayLogSpan => new ClassificationSpan(GrayLogSpan, _classificationType))
                 .ToList();
         }
 

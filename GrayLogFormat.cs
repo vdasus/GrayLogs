@@ -14,23 +14,23 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace TodoClassification
+namespace GrayLogClassification
 {
     /// <summary>
     /// Set the display values for the classification
     /// </summary>
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "todo")]
-    [Name("ToDoText")]
+    [ClassificationType(ClassificationTypeNames = "GrayLog")]
+    [Name("GrayLogText")]
     [UserVisible(true)]
     [Order(After = Priority.High)]
-    internal sealed class ToDoFormat : ClassificationFormatDefinition
+    internal sealed class GrayLogFormat : ClassificationFormatDefinition
     {
-        public ToDoFormat()
+        public GrayLogFormat()
         {
-            DisplayName = "ToDo Text"; //human readable version of the name
+            DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
-            ForegroundColor = Colors.CadetBlue;
+            ForegroundColor = Colors.DarkOliveGreen;
             //BackgroundColor = Colors.Orange;
         }
     }
