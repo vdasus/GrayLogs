@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -29,7 +30,7 @@ namespace TodoClassification
     internal class ToDoTagger : ITagger<ToDoTag>
     {
         
-        private const string SEARCH_TEXT = "todo";
+        private const string SEARCH_TEXT = "log.,_log.,logger.,_logger.";
 
         /// <summary>
         /// This method creates ToDoTag TagSpans over a set of SnapshotSpans.
@@ -39,15 +40,22 @@ namespace TodoClassification
         IEnumerable<ITagSpan<ToDoTag>> ITagger<ToDoTag>.GetTags(NormalizedSnapshotSpanCollection spans)
         {
             //todo: implement tagging
-            foreach (var curSpan in spans)
+            return from curSpan in spans
+                where GetSearchTextPos(curSpan) > -1
+                select new SnapshotSpan(curSpan.Snapshot, new Span(curSpan.Start, curSpan.Length))
+                into todoSpan
+                select new TagSpan<ToDoTag>(todoSpan, new ToDoTag());
+        }
+
+        private static int GetSearchTextPos(SnapshotSpan span)
+        {
+            var strArr = SEARCH_TEXT.Split(',');
+            foreach (var str in strArr)
             {
-                int loc = curSpan.GetText().ToLower().IndexOf(SEARCH_TEXT, StringComparison.Ordinal);
-                if (loc > -1)
-                {
-                    var todoSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curSpan.Start, curSpan.Length));
-                    yield return new TagSpan<ToDoTag>(todoSpan, new ToDoTag());
-                }
+                var rez = span.GetText().ToLower().IndexOf(str, StringComparison.Ordinal);
+                if (rez > -1) return rez;
             }
+            return -1;
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged
