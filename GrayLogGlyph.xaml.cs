@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GrayLogClassification
+namespace GrayLog
 {
     /// <summary>
     /// Interaction logic for GrayLogGlyph.xaml

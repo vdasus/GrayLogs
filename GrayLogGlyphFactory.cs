@@ -13,7 +13,7 @@ using System.Windows;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
 
-namespace GrayLogClassification
+namespace GrayLog
 {
     /// <summary>
     /// This class implements IGlyphFactory, which provides the visual

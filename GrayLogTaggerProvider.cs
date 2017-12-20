@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 
-namespace GrayLogClassification
+namespace GrayLog
 {
     /// <summary>
     /// Export a <see cref="ITaggerProvider"/>

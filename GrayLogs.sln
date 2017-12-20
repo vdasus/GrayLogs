@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22723.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrayLogClassification", "GrayLogClassification.csproj", "{3DF45DDD-0A6C-4E92-B232-C4FC2350BF9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrayLog", "GrayLog.csproj", "{3DF45DDD-0A6C-4E92-B232-C4FC2350BF9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A679C063-28E1-465B-B84A-5319ECE9C043}
 	EndGlobalSection
 EndGlobal

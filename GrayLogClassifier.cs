@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 
-namespace GrayLogClassification
+namespace GrayLog
 {
     /// <summary>
     /// GrayLog tag classifier finds every instance of GrayLogTag within a given span.
@@ -30,6 +30,7 @@ namespace GrayLogClassification
         {
             _tagger = tagger;
             _classificationType = GrayLogType;
+            
         }
 
         /// <summary>

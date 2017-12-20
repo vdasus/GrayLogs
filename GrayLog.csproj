@@ -20,8 +20,8 @@
     <OutputType>Library</OutputType>
     <VsixType>v3</VsixType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GrayLogClassification</RootNamespace>
-    <AssemblyName>GrayLogClassification</AssemblyName>
+    <RootNamespace>GrayLog</RootNamespace>
+    <AssemblyName>GrayLog</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>

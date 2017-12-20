@@ -14,7 +14,7 @@ using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 
-namespace GrayLogClassification
+namespace GrayLog
 {
     /// <summary>
     /// Set the display values for the classification
@@ -30,7 +30,7 @@ namespace GrayLogClassification
         {
             DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
-            ForegroundColor = Colors.DarkOliveGreen;
+            ForegroundColor = Color.FromRgb(115, 132, 84);
             //BackgroundColor = Colors.Orange;
         }
     }
