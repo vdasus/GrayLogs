@@ -11,10 +11,10 @@
 //***************************************************************************-->
 <PackageManifest Version="2.0.0" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
     <Metadata>
-        <Identity Id="ToDoGlyphFactorySample" Version="1.0" Language="en-US" Publisher="Microsoft" />
-        <DisplayName>Todo Glyph</DisplayName>
-        <Description xml:space="preserve">This sample demonstrates adding a glyph for lines that have 'ToDo' in them.</Description>
-        <PreviewImage>Example.ToDoClassification.png</PreviewImage>
+        <Identity Id="GrayLogGlyphFactorySample" Version="1.0" Language="en-US" Publisher="Microsoft" />
+        <DisplayName>GrayLog Glyph</DisplayName>
+        <Description xml:space="preserve">This sample demonstrates adding a glyph for lines that have 'GrayLog' in them.</Description>
+        <PreviewImage>Example.GrayLogClassification.png</PreviewImage>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0,16.0)" />
