@@ -15,11 +15,22 @@ namespace GrayLog
     [Order(After = Priority.High)]
     internal sealed class GrayLogFormat : ClassificationFormatDefinition
     {
+        public Color OptionColor
+        {
+            get
+            {
+                OptionGrayLog page = (OptionGrayLog)GetDialogPage(typeof(OptionGrayLog));
+                return Color.FromArgb(page.OptionColor.A, page.OptionColor.R, page.OptionColor.G, page.OptionColor.B);
+            }
+        }
+
         public GrayLogFormat()
         {
             DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
+
             ForegroundColor = Color.FromRgb(115, 132, 84);
+            //ForegroundColor = Color.FromRgb(115, 132, 84);
             //BackgroundColor = Colors.Orange;
         }
     }
