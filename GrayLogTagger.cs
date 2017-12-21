@@ -18,9 +18,10 @@ namespace GrayLog
     /// </summary>
     internal class GrayLogTagger : ITagger<GrayLogTag>
     {
-        
         private const string SEARCH_TEXT = "log.,_log.,logger.,_logger.";
 
+        private static readonly string[] _tagsList = SEARCH_TEXT.Split(',');
+        
         /// <summary>
         /// This method creates GrayLogTag TagSpans over a set of SnapshotSpans.
         /// </summary>
@@ -38,8 +39,7 @@ namespace GrayLog
 
         private static int GetSearchTextPos(SnapshotSpan span)
         {
-            var strArr = SEARCH_TEXT.Split(',');
-            foreach (var str in strArr)
+            foreach (var str in _tagsList)
             {
                 var rez = span.GetText().ToLower().IndexOf(str, StringComparison.Ordinal);
                 if (rez > -1) return rez;

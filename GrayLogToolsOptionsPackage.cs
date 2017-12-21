@@ -4,12 +4,11 @@ using Microsoft.VisualStudio.Shell;
 
 namespace GrayLog
 {
+    /*[Guid(GuidList.guidMyToolsOptionsPkgString)]*/
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    /*[Guid(GuidList.guidMyToolsOptionsPkgString)]*/
-    [ProvideOptionPage(typeof(OptionGrayLog),
-        "GrayLog", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(OptionGrayLog), "GrayLog", "General", 0, 0, true)]
     [Guid(PACKAGE_GUID_STRING)]
     public sealed class GrayLogToolsOptionsPackage : Package
     {
