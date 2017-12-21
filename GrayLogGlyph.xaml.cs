@@ -5,7 +5,7 @@ namespace GrayLog
     /// <summary>
     /// Interaction logic for GrayLogGlyph.xaml
     /// </summary>
-    public partial class GrayLogGlyph : UserControl
+    public partial class GrayLogGlyph
     {
         public GrayLogGlyph()
         {

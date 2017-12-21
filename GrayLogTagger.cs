@@ -1,15 +1,4 @@
-﻿//***************************************************************************
-// 
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.Text;
@@ -43,8 +32,8 @@ namespace GrayLog
             return from curSpan in spans
                 where GetSearchTextPos(curSpan) > -1
                 select new SnapshotSpan(curSpan.Snapshot, new Span(curSpan.Start, curSpan.Length))
-                into GrayLogSpan
-                select new TagSpan<GrayLogTag>(GrayLogSpan, new GrayLogTag());
+                into grayLogSpan
+                select new TagSpan<GrayLogTag>(grayLogSpan, new GrayLogTag());
         }
 
         private static int GetSearchTextPos(SnapshotSpan span)

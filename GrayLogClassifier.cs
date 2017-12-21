@@ -1,15 +1,4 @@
-﻿//***************************************************************************
-//
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.Text;
@@ -26,10 +15,10 @@ namespace GrayLog
         private readonly IClassificationType _classificationType;
         private readonly ITagAggregator<GrayLogTag> _tagger;
 
-        internal GrayLogClassifier(ITagAggregator<GrayLogTag> tagger, IClassificationType GrayLogType)
+        internal GrayLogClassifier(ITagAggregator<GrayLogTag> tagger, IClassificationType grayLogType)
         {
             _tagger = tagger;
-            _classificationType = GrayLogType;
+            _classificationType = grayLogType;
             
         }
 
@@ -45,7 +34,7 @@ namespace GrayLog
 
             return tags
                 .Select(tagSpan => tagSpan.Span.GetSpans(span.Snapshot).First())
-                .Select(GrayLogSpan => new ClassificationSpan(GrayLogSpan, _classificationType))
+                .Select(grayLogSpan => new ClassificationSpan(grayLogSpan, _classificationType))
                 .ToList();
         }
 
