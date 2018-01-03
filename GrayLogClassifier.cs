@@ -19,7 +19,6 @@ namespace GrayLog
         {
             _tagger = tagger;
             _classificationType = grayLogType;
-            
         }
 
         /// <summary>

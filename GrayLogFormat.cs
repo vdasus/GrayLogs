@@ -19,7 +19,9 @@ namespace GrayLog
         {
             DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
-            ForegroundColor = Color.FromRgb(115, 132, 84);
+            
+            ForegroundColor = Color.FromRgb(84, 112, 109);
+            //ForegroundColor = Color.FromRgb(115, 132, 84);
             //BackgroundColor = Colors.Orange;
         }
     }
