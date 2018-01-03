@@ -11,9 +11,9 @@
 //***************************************************************************-->
 <PackageManifest Version="2.0.0" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
     <Metadata>
-        <Identity Id="GrayLogGlyphFactorySample" Version="1.1" Language="en-US" Publisher="Microsoft" />
-        <DisplayName>GrayLog Glyph</DisplayName>
-        <Description xml:space="preserve">This sample demonstrates adding a glyph for lines that have 'GrayLog' in them.</Description>
+        <Identity Id="GrayLogGlyphFactory" Version="1.2" Language="en-US" Publisher="Microsoft" />
+        <DisplayName>GrayLog</DisplayName>
+        <Description xml:space="preserve">Adding a glyph for lines that have 'log.,_log.,logger.,_logger.' in them and make them grayed.</Description>
         <PreviewImage>Example.GrayLogClassification.png</PreviewImage>
     </Metadata>
     <Installation>
@@ -21,13 +21,13 @@
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
-        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0,15.0)" />
     </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[14.0,16.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
 </PackageManifest>
