@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
-using System.Drawing;
 
 namespace GrayLog
 {
@@ -16,23 +15,5 @@ namespace GrayLog
     {
         /*public const string PACKAGE_GUID_STRING = "2511FF91-C7ED-4406-A28C-165386B64398";*/
         public const string PACKAGE_GUID_STRING = "2511FF91-C7ED-4406-A28C-165327B64398";
-    
-        public bool OptionBool
-        {
-            get
-            {
-                OptionGrayLog page = (OptionGrayLog)GetDialogPage(typeof(OptionGrayLog));
-                return page.OptionBool;
-            }
-        }
-
-        public Color OptionColor
-        {
-            get
-            {
-                OptionGrayLog page = (OptionGrayLog)GetDialogPage(typeof(OptionGrayLog));
-                return page.OptionColor;
-            }
-        }
     }
 }
