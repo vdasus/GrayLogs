@@ -19,23 +19,18 @@ namespace GrayLog
     {
         public GrayLogFormat()
         {
-            Color clr = Color.FromRgb(84, 112, 109);
+            Color color = Color.FromRgb(84, 112, 109);
 
             try
             {
-                //https://stackoverflow.com/questions/6641899/how-to-encapsulate-user-setting-options-page-in-visual-studio-2010-addin
-                //https://msdn.microsoft.com/en-us/library/bb166195.aspx
                 DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
-                // Access options page
                 Properties props = dte?.Properties["GrayLog", "General"];
                 
                 Property pathProperty = props?.Item("OptionColor");
                 if (pathProperty?.Value != null)
                 {
-                    clr = UIntToColor((uint)pathProperty.Value);
+                    color = UIntToColor((uint)pathProperty.Value);
                 }
-
-                /*GrayLogToolsOptionsPackage myToolsOptionsPackage = this.package as GrayLogToolsOptionsPackage;*/
             }
             catch (Exception)
             {
@@ -44,8 +39,7 @@ namespace GrayLog
             
             DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
-            ForegroundColor = clr;
-            //BackgroundColor = Colors.Orange;
+            ForegroundColor = color;
         }
 
         private static Color UIntToColor(uint color)
