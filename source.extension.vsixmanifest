@@ -11,7 +11,7 @@
 //***************************************************************************-->
 <PackageManifest Version="2.0.0" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
     <Metadata>
-        <Identity Id="GrayLogGlyphFactory" Version="1.2" Language="en-US" Publisher="Microsoft" />
+        <Identity Id="GrayLogGlyphFactory" Version="2019.1" Language="en-US" Publisher="Microsoft" />
         <DisplayName>GrayLog</DisplayName>
         <Description xml:space="preserve">Adding a glyph for lines that have 'log.,_log.,logger.,_logger.' in them and make them grayed.</Description>
         <PreviewImage>Example.GrayLogClassification.png</PreviewImage>
