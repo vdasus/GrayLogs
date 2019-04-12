@@ -19,6 +19,7 @@ namespace GrayLog
     {
         public GrayLogFormat()
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             DisplayName = "GrayLog Text"; //human readable version of the name
             BackgroundOpacity = 0;
             ForegroundColor = GetForegroundColorFromSettings();

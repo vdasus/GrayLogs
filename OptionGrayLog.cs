@@ -14,14 +14,9 @@ namespace GrayLog
         [Description("Show thumbs on lines with log (not implemented yet)")]
         public bool OptionBool { get; set; } = true;
 
-        private Color? _optionColor;
         [Category("GrayLog")]
         [DisplayName("Foreground Color")]
-        [Description("Foreground Color of log lines (restart required)")]
-        public Color OptionColor
-        {
-            get => _optionColor ?? Color.DarkOliveGreen;
-            set => _optionColor = value;
-        }
+        [Description("Foreground Color of log lines")]
+        public Color OptionColor { get; set; }
     }
 }

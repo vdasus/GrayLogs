@@ -4,16 +4,16 @@ using Microsoft.VisualStudio.Shell;
 namespace GrayLog
 {
     /*[Guid(GuidList.guidMyToolsOptionsPkgString)]*/
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
-    /*[ProvideProfile(typeof(OptionGrayLog),
-        "GrayLog", "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]*/
+    [ProvideProfile(typeof(OptionGrayLog), "GrayLog", "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideOptionPage(typeof(OptionGrayLog), "GrayLog", "General", 0, 0, true)]
     [Guid(PACKAGE_GUID_STRING)]
-    public sealed class GrayLogToolsOptionsPackage : Package
+    public sealed class GrayLogToolsOptionsPackage : AsyncPackage
     {
         /*public const string PACKAGE_GUID_STRING = "2511FF91-C7ED-4406-A28C-165386B64398";*/
-        public const string PACKAGE_GUID_STRING = "2511FF91-C7ED-4406-A28C-165327B64398";
+        /*public const string PACKAGE_GUID_STRING = "2511FF91-C7ED-4406-A28C-165327B64398";*/
+        public const string PACKAGE_GUID_STRING = "876D4E51-D169-4754-A8D3-8451E4BE2456";
     }
 }
