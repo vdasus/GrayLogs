@@ -11,7 +11,7 @@
 //***************************************************************************-->
 <PackageManifest Version="2.0.0" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
     <Metadata>
-        <Identity Id="GrayLogGlyphFactory" Version="2019.3" Language="en-US" Publisher="vdasus" />
+        <Identity Id="GrayLogGlyphFactory" Version="2019.4" Language="en-US" Publisher="vdasus" />
         <DisplayName>GrayLog</DisplayName>
         <Description xml:space="preserve">Adding a glyph for lines that have 'log.,_log.,logger.,_logger.' in them and make them grayed.</Description>
         <MoreInfo>https://github.com/vdasus/GrayLogs</MoreInfo>
