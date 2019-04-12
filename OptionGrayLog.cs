@@ -17,6 +17,6 @@ namespace GrayLog
         [Category("GrayLog")]
         [DisplayName("Foreground Color")]
         [Description("Foreground Color of log lines")]
-        public Color OptionColor { get; set; }
+        public Color OptionColor { get; set; } = Color.DarkOliveGreen;
     }
 }
