@@ -15,31 +15,36 @@ namespace GrayLog
     [Name("GrayLog")]
     [UserVisible(true)]
     [Order(After = Priority.High)]
-    internal sealed class GrayLogFormat : ClassificationFormatDefinition
+    internal class GrayLogFormat : ClassificationFormatDefinition
     {
         public GrayLogFormat()
         {
-            Color color = Color.FromRgb(84, 112, 109);
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            DisplayName = "GrayLog Text"; //human readable version of the name
+            BackgroundOpacity = 0;
+            ForegroundColor = GetForegroundColorFromSettings();
+        }
 
+        private static Color GetForegroundColorFromSettings()
+        {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             try
             {
                 DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
                 Properties props = dte?.Properties["GrayLog", "General"];
-                
+
                 Property pathProperty = props?.Item("OptionColor");
                 if (pathProperty?.Value != null)
                 {
-                    color = UIntToColor((uint)pathProperty.Value);
+                    return UIntToColor((uint)pathProperty.Value);
                 }
             }
             catch (Exception)
             {
                 //
             }
-            
-            DisplayName = "GrayLog Text"; //human readable version of the name
-            BackgroundOpacity = 0;
-            ForegroundColor = color;
+
+            return Color.FromRgb(84, 112, 109);
         }
 
         private static Color UIntToColor(uint color)

@@ -11,7 +11,7 @@ namespace GrayLog
     {
         [Category("GrayLog")]
         [DisplayName("Show Thumbs")]
-        [Description("Show thumbs on lines with log")]
+        [Description("Show thumbs on lines with log (not implemented yet)")]
         public bool OptionBool { get; set; } = true;
 
         [Category("GrayLog")]
