@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+
+  <Commands package="guidGrayLogPackage">
+    <Groups>
+      <Group guid="guidGrayLogCommandSet" id="GrayLogMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidGrayLogCommandSet" id="cmdidToggleGrayLog" priority="0x0100" type="Button">
+        <Parent guid="guidGrayLogCommandSet" id="GrayLogMenuGroup" />
+        <Strings>
+          <ButtonText>Toggle GrayLog</ButtonText>
+          <CanonicalName>.Tools.ToggleGrayLog</CanonicalName>
+          <LocCanonicalName>.Tools.ToggleGrayLog</LocCanonicalName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <KeyBindings>
+    <KeyBinding guid="guidGrayLogCommandSet" id="cmdidToggleGrayLog" editor="guidVSStd97" key1="G" mod1="Control Alt Shift" />
+  </KeyBindings>
+
+  <Symbols>
+    <GuidSymbol name="guidGrayLogPackage" value="{876d4e51-d169-4754-a8d3-8451e4be2456}" />
+    <GuidSymbol name="guidGrayLogCommandSet" value="{5b0f3c2e-8a4d-4f7e-9c61-2d7e3a9b1f40}">
+      <IDSymbol name="GrayLogMenuGroup" value="0x1020" />
+      <IDSymbol name="cmdidToggleGrayLog" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

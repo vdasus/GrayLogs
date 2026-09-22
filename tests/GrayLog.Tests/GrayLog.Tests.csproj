@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- The matching logic has no VS dependencies, so it is compiled here directly instead of referencing the VSIX project. -->
+  <ItemGroup>
+    <Compile Include="..\..\src\GrayLog\RuleParser.cs" Link="Source\RuleParser.cs" />
+    <Compile Include="..\..\src\GrayLog\LineMatcher.cs" Link="Source\LineMatcher.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="4.0.1" />
+    <PackageReference Include="FluentAssertions" Version="7.2.2" />
+  </ItemGroup>
+
+</Project>

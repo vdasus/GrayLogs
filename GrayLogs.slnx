@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GrayLog/GrayLog.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GrayLog.Tests/GrayLog.Tests.csproj" />
+  </Folder>
+</Solution>
