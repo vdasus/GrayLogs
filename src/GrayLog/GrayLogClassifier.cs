@@ -63,12 +63,11 @@ namespace GrayLog
 
             var first = snapshot.GetLineNumberFromPosition(span.Start);
             var last = snapshot.GetLineNumberFromPosition(span.End);
-            for (var number = first; number <= last; number++)
+            var slots = LineMatcher.GetSlots(rules, GetLine, snapshot.LineCount, first, last);
+            for (var i = 0; i < slots.Length; i++)
             {
-                var slot = LineMatcher.GetSlot(rules, GetLine, snapshot.LineCount, number);
-                if (slot < 0) continue;
-
-                result.Add(new ClassificationSpan(snapshot.GetLineFromLineNumber(number).Extent, _types[slot]));
+                if (slots[i] < 0) continue;
+                result.Add(new ClassificationSpan(snapshot.GetLineFromLineNumber(first + i).Extent, _types[slots[i]]));
             }
 
             return result;

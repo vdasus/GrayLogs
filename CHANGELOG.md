@@ -10,6 +10,7 @@ and the project follows [Semantic Versioning](https://semver.org/).
 - The options page is now a table of rules (on/off, name, regular expression, ignore case, style)
   with Add, Remove, Move up/down and Reset to defaults buttons, an on/off checkbox, and a field to test a line of code.
 - Settings are stored in a new format; rules customized in 2.0.0 are replaced by the defaults.
+- Classification reads and matches each line once per request instead of up to 31 times.
 
 ### Added
 - Predefined rules: "Logger calls" (enabled), "Console output" and "Debug / Trace output" (disabled).

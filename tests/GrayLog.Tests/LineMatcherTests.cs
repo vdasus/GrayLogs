@@ -121,5 +121,42 @@ namespace GrayLog.Tests
         {
             Slots("log.Info(x);", new Rule[0]).Should().Equal(-1);
         }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        [Trait("Category", "Performance")]
+        public void GetSlots_ReadsEachLineOnce()
+        {
+            // Every line starts a 3-line logging call, the worst case for the parenthesis scan.
+            var lines = Enumerable.Range(0, 1000)
+                .Select(i => (i % 3) switch { 0 => "_logger.LogInformation(", 1 => "    \"text\",", _ => "    x);" })
+                .ToArray();
+            var reads = new int[lines.Length];
+
+            LineMatcher.GetSlots(DefaultRules, i => { reads[i]++; return lines[i]; }, lines.Length, 500, 560);
+
+            reads.Should().OnlyContain(count => count <= 1);
+            reads.Sum().Should().BeLessThanOrEqualTo(61 + LineMatcher.MaxStatementLines + 3);
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void GetSlots_EqualsPerLineGetSlot()
+        {
+            const string code = """
+                Process(order);
+                _logger.LogInformation(
+                    "a",
+                    log.Format(x));
+                if (log.IsDebugEnabled)
+                    Console.WriteLine("(");
+                log.Level = Level.Debug;
+                """;
+            var lines = code.Replace("\r", "").Split('\n');
+
+            var slots = LineMatcher.GetSlots(DefaultRules, i => lines[i], lines.Length, 0, lines.Length - 1);
+
+            slots.Should().Equal(Slots(code));
+        }
     }
 }

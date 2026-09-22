@@ -109,9 +109,8 @@ VS 2026; if yes, slot 1 defaults to opacity 0.5 instead of a fixed color.
 
 Classifier integration:
 
-- For each requested line, the classifier checks the line itself and scans back up to 30 lines for a start line
-  whose statement reaches the requested line.
-  (`ponytail:` backward scan per line; add a per-snapshot cache if profiling shows cost on large files.)
+- For a requested span, `LineMatcher.GetSlots` makes one pass from 30 lines above the span to its end. Each line
+  text is read and matched at most once per call (a test checks this).
 - On `ITextBuffer.Changed`, the classifier raises `ClassificationChanged` for the changed lines plus the following
   30 lines, because an edit can open or close a multi-line statement.
 - On settings change or toggle, the classifier raises `ClassificationChanged` for the whole buffer. Open documents
@@ -196,3 +195,20 @@ Estimated total: 4 days of focused work.
 - Not verified yet (requires running Visual Studio): classification colors over Roslyn highlighting,
   `ForegroundOpacity` merging, the `Ctrl+Alt+Shift+G` binding, and the options page in the VS 2026 options UI.
 - `.github/workflows/codeql.yml` uses autobuild on `ubuntu-latest`, which cannot build a .NET Framework VSIX.
+
+### Resource review (2.1.0)
+
+Static review of object lifetimes; no runtime profiling in Visual Studio yet.
+
+- Classifier: one per text buffer, stored in `buffer.Properties`; it subscribes only to its own buffer's
+  `Changed` event, so it is collected together with the buffer.
+- Settings change notification: a static list of `WeakReference<GrayLogClassifier>`, pruned when a classifier
+  is created; the static `GrayLogSettings.Changed` handler captures no instance.
+- Options page: one WPF control per package lifetime; it edits clones of the rules.
+- Regexes are not `RegexOptions.Compiled` and not stored in the static regex cache; replaced instances are collected.
+- Fixed in 2.1.0: classification read each line text up to 31 times per request (backward scan per line);
+  now each line is read and matched once per request.
+- Known limit: a pathological user pattern can cost up to 50 ms (match timeout) per line per request.
+- Runtime check: open and close many documents in the Experimental Instance, take a heap snapshot
+  (Visual Studio Diagnostic Tools or PerfView), and verify that the number of `GrayLogClassifier` instances
+  matches the number of open code buffers.

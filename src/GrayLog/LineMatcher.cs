@@ -16,19 +16,42 @@ namespace GrayLog
         /// <summary>Returns the zero-based style slot for the line, or -1 when the line is not dimmed.</summary>
         public static int GetSlot(IReadOnlyList<Rule> rules, Func<int, string> getLine, int lineCount, int line)
         {
-            if (rules.Count == 0) return -1;
+            return GetSlots(rules, getLine, lineCount, line, line)[0];
+        }
 
-            // ponytail: backward scan per requested line; add a per-snapshot cache if profiling shows cost on large files.
-            var firstCandidate = Math.Max(0, line - MaxStatementLines);
-            for (var start = line; start >= firstCandidate; start--)
+        /// <summary>
+        /// Returns the zero-based style slot for every line in [firstLine, lastLine] (-1 = not dimmed).
+        /// Each line is read and matched at most once per call; statements starting up to
+        /// <see cref="MaxStatementLines"/> lines above firstLine are taken into account.
+        /// </summary>
+        public static int[] GetSlots(IReadOnlyList<Rule> rules, Func<int, string> getLine, int lineCount, int firstLine, int lastLine)
+        {
+            var slots = new int[lastLine - firstLine + 1];
+            for (var i = 0; i < slots.Length; i++) slots[i] = -1;
+            if (rules.Count == 0) return slots;
+
+            // Line texts are shared between the start-line scan and the parenthesis scan.
+            var cache = new Dictionary<int, string>();
+            string GetLine(int number)
             {
-                var text = getLine(start);
-                var match = FindMatch(rules, text, out var slot);
-                if (match == null) continue;
-                if (start == line || GetStatementEnd(getLine, lineCount, start, match.Index) >= line) return slot;
+                if (!cache.TryGetValue(number, out var text)) cache[number] = text = getLine(number);
+                return text;
             }
 
-            return -1;
+            // Ascending order: a later start line overrides an earlier one, so the nearest statement wins.
+            for (var start = Math.Max(0, firstLine - MaxStatementLines); start <= lastLine; start++)
+            {
+                var match = FindMatch(rules, GetLine(start), out var slot);
+                if (match == null) continue;
+
+                var end = GetStatementEnd(GetLine, lineCount, start, match.Index);
+                for (var line = Math.Max(start, firstLine); line <= Math.Min(end, lastLine); line++)
+                {
+                    slots[line - firstLine] = slot;
+                }
+            }
+
+            return slots;
         }
 
         private static Match FindMatch(IReadOnlyList<Rule> rules, string text, out int slot)
