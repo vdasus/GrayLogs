@@ -158,5 +158,36 @@ namespace GrayLog.Tests
 
             slots.Should().Equal(Slots(code));
         }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void TimedOutRule_IsDisabledAndReportedOnce()
+        {
+            // Catastrophic backtracking: exceeds the 50 ms match timeout.
+            var rules = RuleParser.Compile(new[]
+            {
+                new RuleDefinition { Name = "Slow", Pattern = "^(a+)+$", IgnoreCase = false },
+                new RuleDefinition { Name = "Fast", Pattern = "a", IgnoreCase = false, Style = 2 },
+            }).ToArray();
+            var line = new string('a', 40) + "!";
+            var reported = new System.Collections.Generic.List<string>();
+            void OnTimedOut(Rule rule) { if (rules.Contains(rule)) reported.Add(rule.Name); }
+
+            LineMatcher.RuleTimedOut += OnTimedOut;
+            try
+            {
+                var first = LineMatcher.GetSlot(rules, _ => line, 1, 0);
+                var second = LineMatcher.GetSlot(rules, _ => line, 1, 0);
+
+                first.Should().Be(1, "the next rule still applies after the slow one times out");
+                second.Should().Be(1);
+                rules[0].TimedOut.Should().BeTrue();
+                reported.Should().Equal("Slow");
+            }
+            finally
+            {
+                LineMatcher.RuleTimedOut -= OnTimedOut;
+            }
+        }
     }
 }

@@ -41,6 +41,30 @@ namespace GrayLog
             }
         }
 
+        public IReadOnlyList<StyleSettings> Styles
+        {
+            get => (IReadOnlyList<StyleSettings>)StylesList.ItemsSource;
+            set => StylesList.ItemsSource = value.Select(style => style.Clone()).ToList();
+        }
+
+        private void OnChooseColor(object sender, RoutedEventArgs e)
+        {
+            if (!(((FrameworkElement)sender).DataContext is StyleSettings style)) return;
+
+            using (var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true })
+            {
+                if (StyleSettings.TryParseColor(style.Color, out var current))
+                {
+                    dialog.Color = System.Drawing.Color.FromArgb(current.R, current.G, current.B);
+                }
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    style.Color = $"#{dialog.Color.R:X2}{dialog.Color.G:X2}{dialog.Color.B:X2}";
+                }
+            }
+        }
+
         private void OnAdd(object sender, RoutedEventArgs e)
         {
             var rule = new RuleDefinition { Name = "New rule", Pattern = @"\bMyLogger\." };
@@ -75,6 +99,7 @@ namespace GrayLog
         private void OnReset(object sender, RoutedEventArgs e)
         {
             Rules = RuleParser.CreateDefaults();
+            Styles = GrayLogFormats.CreateDefaultStyles();
         }
 
         private void OnInputChanged(object sender, TextChangedEventArgs e) => Refresh();

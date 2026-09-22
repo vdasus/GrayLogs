@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace GrayLog
 {
@@ -38,6 +39,14 @@ namespace GrayLog
 
         /// <summary>Zero-based style slot index.</summary>
         public int Slot { get; }
+
+        private int _timedOut;
+
+        /// <summary>Set after the first match timeout; the rule is then skipped until settings are changed.</summary>
+        public bool TimedOut => Volatile.Read(ref _timedOut) != 0;
+
+        /// <summary>Marks the rule as timed out; returns true only for the first caller.</summary>
+        public bool MarkTimedOut() => Interlocked.Exchange(ref _timedOut, 1) == 0;
     }
 
     /// <summary>Default rules, storage format and compilation of rule definitions.</summary>

@@ -54,10 +54,17 @@ namespace GrayLog
             return slots;
         }
 
+        /// <summary>
+        /// Raised once per rule when its pattern exceeds the match timeout; the rule is skipped afterwards
+        /// until settings are changed (a change compiles new rules). May be raised on any thread.
+        /// </summary>
+        public static event Action<Rule> RuleTimedOut;
+
         private static Match FindMatch(IReadOnlyList<Rule> rules, string text, out int slot)
         {
             foreach (var rule in rules)
             {
+                if (rule.TimedOut) continue;
                 try
                 {
                     var match = rule.Pattern.Match(text);
@@ -69,7 +76,8 @@ namespace GrayLog
                 }
                 catch (RegexMatchTimeoutException)
                 {
-                    // A pathological pattern must not break the editor; treat as no match.
+                    // A pathological pattern must not slow down every line of the editor.
+                    if (rule.MarkTimedOut()) RuleTimedOut?.Invoke(rule);
                 }
             }
 

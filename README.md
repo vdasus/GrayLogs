@@ -20,7 +20,7 @@ Requires Visual Studio 2026 or later (amd64 or arm64).
 - **Rules:** *Tools > Options > GrayLog > General*. A table of rules: each rule is a regular expression
   with a name, an ignore-case flag and a style. The "Logger calls" rule is predefined and enabled;
   "Console output" and "Debug / Trace output" are predefined and disabled. The page also has a field to test a line of code.
-- **Colors:** *Tools > Options > Environment > Fonts and Colors*, items `GrayLog - Style 1..3`.
+- **Colors:** on the same page, section *Styles*: color (name or `#RRGGBB`, or *Choose...*) and italic for each of the three styles.
 - **On/off:** *Tools > Toggle GrayLog* or `Ctrl+Alt+Shift+G`.
 
 ## Build

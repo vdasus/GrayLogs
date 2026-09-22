@@ -13,7 +13,7 @@ Scope of v1:
 
 - Visual Studio 2026 and later (product version 18.x+).
 - Patterns are regular expressions configured in global Tools > Options.
-- Each pattern uses one of three style slots; colors are edited in *Fonts and Colors*.
+- Each pattern uses one of three style slots; colors are edited in the GrayLog options page.
 - The whole line is dimmed; a multi-line call is dimmed until its closing parenthesis.
 - Quick on/off toggle via a menu command and a keyboard shortcut.
 - Distribution: local `.vsix` only. Display name stays **GrayLog**.
@@ -49,7 +49,7 @@ GrayLogs.slnx
 │   ├── RuleParser.cs                  Rule definitions: defaults, storage format, compilation
 │   ├── LineMatcher.cs                 Pure logic: which lines of a text are dimmed and with which slot (no VS types)
 │   ├── GrayLogClassifier.cs           IClassifier + IClassifierProvider
-│   ├── GrayLogFormats.cs              Three classification types and their default formats
+│   ├── GrayLogFormats.cs              Style slots: classification types, style settings, format map update
 │   └── source.extension.vsixmanifest
 └── tests/GrayLog.Tests/               xUnit v3 + FluentAssertions 7.x (net10.0)
     ├── RuleParserTests.cs
@@ -85,17 +85,21 @@ Predefined rules:
 
 ### 3.2 Appearance
 
-Three classification types exported via MEF, visible in *Tools > Options > Environment > Fonts and Colors*:
+Three classification types exported via MEF (`GrayLog - Style 1..3`), hidden from *Fonts and Colors*
+(`UserVisible(false)`). Their color and italic flag are edited in the *Styles* section of the GrayLog options page
+(color name or `#RRGGBB`, a *Choose...* button with the Windows color dialog, a live preview) and stored in the
+GrayLog settings collection (`Style{N}Color`, `Style{N}Italic`).
 
-| Slot | Name in Fonts and Colors | Default format |
-|---|---|---|
-| 1 | `GrayLog - Style 1` | Gray foreground `#808080` |
-| 2 | `GrayLog - Style 2` | Same as slot 1, italic |
-| 3 | `GrayLog - Style 3` | Same as slot 1 |
+The package applies them to the editor's `text` classification format map (`IClassificationFormatMapService`)
+at startup and after every settings change, so all settings are in one place.
+
+| Slot | Default |
+|---|---|
+| 1 | Olive |
+| 2 | Olive, italic |
+| 3 | Gray |
 
 Format definitions use `Order(After = Priority.High)` so they override Roslyn syntax colors on the dimmed lines.
-The spike also checks whether `ForegroundOpacity` alone (keeping syntax colors, only fading them) is merged by
-VS 2026; if yes, slot 1 defaults to opacity 0.5 instead of a fixed color.
 
 ### 3.3 Matching and multi-line statements
 
@@ -172,7 +176,7 @@ Estimated total: 4 days of focused work.
 | # | Question | Answer |
 |---|---|---|
 | Q1 | Supported VS versions | VS 2026 and later |
-| Q2 | Appearance model | A — fixed style slots in *Fonts and Colors* |
+| Q2 | Appearance model | A — fixed style slots (edited in *Fonts and Colors* in 2.0.0, in the GrayLog options page since 2.1.0) |
 | Q3 | What is dimmed | The whole line |
 | Q4 | Settings location | Global Tools > Options only; format chosen by the implementer (multi-line text, section 3.1) |
 | Q5 | Multi-line statements | Yes, via parenthesis balancing |
@@ -208,7 +212,8 @@ Static review of object lifetimes; no runtime profiling in Visual Studio yet.
 - Regexes are not `RegexOptions.Compiled` and not stored in the static regex cache; replaced instances are collected.
 - Fixed in 2.1.0: classification read each line text up to 31 times per request (backward scan per line);
   now each line is read and matched once per request.
-- Known limit: a pathological user pattern can cost up to 50 ms (match timeout) per line per request.
+- A pattern that exceeds the 50 ms match timeout is disabled until settings change (`Rule.MarkTimedOut`, thread-safe),
+  and the package shows a one-time warning, so a pathological pattern costs at most one timeout.
 - Runtime check: open and close many documents in the Experimental Instance, take a heap snapshot
   (Visual Studio Diagnostic Tools or PerfView), and verify that the number of `GrayLogClassifier` instances
   matches the number of open code buffers.

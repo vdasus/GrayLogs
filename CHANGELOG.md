@@ -12,8 +12,14 @@ and the project follows [Semantic Versioning](https://semver.org/).
 - Settings are stored in a new format; rules customized in 2.0.0 are replaced by the defaults.
 - Classification reads and matches each line once per request instead of up to 31 times.
 
+- Style colors and italic are edited in the GrayLog options page (with a color picker and a preview)
+  instead of *Fonts and Colors*; the items are no longer listed there.
+- Default color is Olive (Style 1 and Style 2, Style 2 italic); Style 3 is Gray.
+
 ### Added
 - Predefined rules: "Logger calls" (enabled), "Console output" and "Debug / Trace output" (disabled).
+- A rule whose regular expression exceeds the 50 ms match timeout is disabled until the settings are changed,
+  and a one-time warning is shown.
 
 ## [2.0.0] - 2026-09-22
 
