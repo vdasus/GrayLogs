@@ -35,7 +35,7 @@ namespace GrayLog
         private static void OnToggle(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            GrayLogSettings.Save(!GrayLogSettings.Enabled, GrayLogSettings.RulesText);
+            GrayLogSettings.Save(!GrayLogSettings.Enabled, GrayLogSettings.Definitions);
         }
     }
 }

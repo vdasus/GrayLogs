@@ -17,8 +17,9 @@ Requires Visual Studio 2026 or later (amd64 or arm64).
 
 ## Usage
 
-- **Rules:** *Tools > Options > GrayLog > General > Rules*. One regex per line; `#` starts a comment;
-  an optional prefix `2: ` or `3: ` selects the style slot; `(?i)` makes a rule case-insensitive.
+- **Rules:** *Tools > Options > GrayLog > General*. A table of rules: each rule is a regular expression
+  with a name, an ignore-case flag and a style. The "Logger calls" rule is predefined and enabled;
+  "Console output" and "Debug / Trace output" are predefined and disabled. The page also has a field to test a line of code.
 - **Colors:** *Tools > Options > Environment > Fonts and Colors*, items `GrayLog - Style 1..3`.
 - **On/off:** *Tools > Toggle GrayLog* or `Ctrl+Alt+Shift+G`.
 

@@ -6,7 +6,7 @@ namespace GrayLog.Tests
 {
     public class LineMatcherTests
     {
-        private static readonly Rule[] DefaultRules = RuleParser.Parse(RuleParser.DefaultRules).ToArray();
+        private static readonly Rule[] DefaultRules = RuleParser.Compile(RuleParser.CreateDefaults()).ToArray();
 
         /// <summary>Returns the slot of every line of the code, -1 for lines that are not dimmed.</summary>
         private static int[] Slots(string code, Rule[] rules = null)
@@ -106,7 +106,11 @@ namespace GrayLog.Tests
         [Trait("Category", "Unit")]
         public void FirstMatchingRule_DefinesSlot()
         {
-            var rules = RuleParser.Parse("2: Console\\.\n3: Write").ToArray();
+            var rules = RuleParser.Compile(new[]
+            {
+                new RuleDefinition { Pattern = @"Console\.", Style = 2 },
+                new RuleDefinition { Pattern = "Write", Style = 3 },
+            }).ToArray();
 
             Slots("Console.WriteLine(\n  x);", rules).Should().Equal(1, 1);
         }

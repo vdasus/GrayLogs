@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="GrayLogGlyphFactory" Version="2.0.0" Language="en-US" Publisher="vdasus" />
+    <Identity Id="GrayLogGlyphFactory" Version="2.1.0" Language="en-US" Publisher="vdasus" />
     <DisplayName>GrayLog</DisplayName>
     <Description xml:space="preserve">De-emphasizes lines that match configurable regular expressions (by default, logging calls such as log., logger., _logger.), including multi-line calls up to the closing parenthesis. Personal project, provided as is; use at your own risk.</Description>
     <MoreInfo>https://github.com/vdasus/GrayLogs</MoreInfo>

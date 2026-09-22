@@ -42,10 +42,11 @@ Classic in-process VSSDK editor extension (MEF). Editor classification is the su
 GrayLogs.slnx
 ├── src/GrayLog/                       VSIX project (SDK-style, net48 — required by in-process VS extensions)
 │   ├── GrayLogPackage.cs              AsyncPackage: options page and toggle command registration
-│   ├── GrayLogOptions.cs              Options page: rules text
+│   ├── GrayLogOptions.cs              Options page (UIElementDialogPage)
+│   ├── GrayLogOptionsControl.xaml(.cs) Options UI: rules table, test field
 │   ├── GrayLogSettings.cs             Settings store access, change notification
 │   ├── GrayLogPackage.vsct            "Toggle GrayLog" command, menu placement, default key binding
-│   ├── RuleParser.cs                  Rules text -> list of (Regex, style slot); reports invalid lines
+│   ├── RuleParser.cs                  Rule definitions: defaults, storage format, compilation
 │   ├── LineMatcher.cs                 Pure logic: which lines of a text are dimmed and with which slot (no VS types)
 │   ├── GrayLogClassifier.cs           IClassifier + IClassifierProvider
 │   ├── GrayLogFormats.cs              Three classification types and their default formats
@@ -58,27 +59,29 @@ GrayLogs.slnx
 Dependencies: `Microsoft.VisualStudio.SDK` and `Microsoft.VSSDK.BuildTools` only. `Community.VisualStudio.Toolkit`
 was considered and dropped: one options page and one command do not justify an extra dependency.
 
-### 3.1 Rules format (Tools > Options > GrayLog > General)
+### 3.1 Rules and options page (Tools > Options > GrayLog > General)
 
-Settings are global only and stored in the VS user settings store (collection `GrayLog`).
-The options page has one property, `Rules` (multi-line string, edited with
-`System.ComponentModel.Design.MultilineStringEditor`). The on/off state is changed only by the toggle command,
-whose menu item shows a check mark while dimming is enabled.
+Settings are global only and stored in the VS user settings store (collection `GrayLog`, keys `Enabled` and
+`RuleDefinitions`). The options page (`UIElementDialogPage` with a WPF control, VS-themed dialog styles) contains:
 
-One rule per line:
+- a checkbox that enables or disables dimming (the same state as the toggle command);
+- a table of rules with the columns *On*, *Name*, *Regular expression*, *Ignore case*, *Style* (1..3);
+- buttons *Add rule*, *Remove*, *Move up*, *Move down*, *Reset to defaults*;
+- a *Try a line of code* field that shows which rule dims the entered line;
+- a note where the colors are edited.
 
-```
-# Lines starting with '#' are comments; empty lines are ignored.
-# Optional prefix "N: " selects style slot 1..3 (default 1). Use (?i) for case-insensitive matching.
-(?i)\b_?log(ger)?\??\.
-2: \bConsole\.Write(Line)?\(
-2: \bDebug\.(Write|Assert)
-```
+Predefined rules:
 
-- A multi-line text field was chosen over a table editor: it needs no custom UI, is easy to copy between machines,
-  and supports comments.
-- Invalid regex lines are reported when the options page is saved (message with line number) and skipped at runtime.
+| Name | Pattern | Ignore case | Style | On |
+|---|---|---|---|---|
+| Logger calls | `\b_?log(ger)?\??\.` | yes | 1 | yes |
+| Console output | `\bConsole\.Write(Line)?\(` | no | 2 | no |
+| Debug / Trace output | `\b(Debug\|Trace)\.(Write\|WriteLine\|Print\|Assert\|Fail)\w*\(` | no | 2 | no |
+
+- Version 2.0.0 used a single multi-line text field; it was replaced in 2.1.0 because it was not intuitive.
+- Invalid patterns are shown under the table while editing and block *OK* with a message; at runtime they are skipped.
 - Regexes are created once per settings change with `RegexOptions.CultureInvariant` and a 50 ms match timeout.
+- Storage format: one rule per line, tab-separated `enabled, style, ignoreCase, name, pattern`.
 
 ### 3.2 Appearance
 
@@ -150,7 +153,7 @@ Estimated total: 4 days of focused work.
 
 ## 5. Tests
 
-- `RuleParserTests`: comments, empty lines, slot prefix, default slot, invalid regex reported with line number.
+- `RuleParserTests`: defaults, disabled/empty rules, style clamping, ignore case, invalid pattern reported with rule number, storage round trip.
 - `LineMatcherTests`: single-line match, `(?i)` flag, multi-line call dimmed to closing parenthesis,
   parentheses inside string literals and comments, 30-line limit on unbalanced statements, first rule wins.
 - All tests carry `[Trait("Category", ...)]`.

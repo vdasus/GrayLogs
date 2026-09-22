@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -8,50 +9,92 @@ namespace GrayLog.Tests
     {
         [Fact]
         [Trait("Category", "Unit")]
-        public void Parse_SkipsCommentsAndEmptyLines()
+        public void Defaults_HaveOneEnabledLoggerRule()
         {
-            var rules = RuleParser.Parse("# comment\n\n   \nlog\\.\r\n");
+            var errors = new List<string>();
 
-            rules.Should().ContainSingle().Which.Pattern.ToString().Should().Be("log\\.");
+            var rules = RuleParser.Compile(RuleParser.CreateDefaults(), errors);
+
+            errors.Should().BeEmpty();
+            rules.Should().ContainSingle().Which.Name.Should().StartWith("Logger calls");
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void Compile_SkipsDisabledAndEmptyRules()
+        {
+            var definitions = new[]
+            {
+                new RuleDefinition { Pattern = "a" },
+                new RuleDefinition { Pattern = "b", Enabled = false },
+                new RuleDefinition { Pattern = "  " },
+            };
+
+            RuleParser.Compile(definitions).Select(r => r.Pattern.ToString()).Should().Equal("a");
         }
 
         [Theory]
         [Trait("Category", "Unit")]
-        [InlineData("log\\.", 0, "log\\.")]
-        [InlineData("1: log\\.", 0, "log\\.")]
-        [InlineData("2: log\\.", 1, "log\\.")]
-        [InlineData("3:log\\.", 2, "log\\.")]
-        [InlineData("4: log\\.", 0, "4: log\\.")]
-        public void Parse_ReadsSlotPrefix(string line, int expectedSlot, string expectedPattern)
+        [InlineData(1, 0)]
+        [InlineData(3, 2)]
+        [InlineData(0, 0)]
+        [InlineData(9, 2)]
+        public void Compile_ClampsStyleToSlot(int style, int expectedSlot)
         {
-            var rule = RuleParser.Parse(line).Should().ContainSingle().Subject;
+            RuleParser.Compile(new[] { new RuleDefinition { Pattern = "a", Style = style } })
+                .Single().Slot.Should().Be(expectedSlot);
+        }
 
-            rule.Slot.Should().Be(expectedSlot);
-            rule.Pattern.ToString().Should().Be(expectedPattern);
+        [Theory]
+        [Trait("Category", "Unit")]
+        [InlineData(true, "LOG.Info", true)]
+        [InlineData(false, "LOG.Info", false)]
+        [InlineData(false, "log.Info", true)]
+        public void Compile_AppliesIgnoreCase(bool ignoreCase, string text, bool expected)
+        {
+            var rule = RuleParser.Compile(new[] { new RuleDefinition { Pattern = @"log\.", IgnoreCase = ignoreCase } }).Single();
+
+            rule.Pattern.IsMatch(text).Should().Be(expected);
         }
 
         [Fact]
         [Trait("Category", "Unit")]
-        public void Parse_ReportsInvalidRegexWithLineNumber()
+        public void Compile_ReportsInvalidPatternWithRuleNumber()
         {
             var errors = new List<string>();
+            var definitions = new[]
+            {
+                new RuleDefinition { Pattern = "a" },
+                new RuleDefinition { Name = "Broken", Pattern = "(unclosed" },
+            };
 
-            var rules = RuleParser.Parse("log\\.\n# comment\n(unclosed", errors);
-
-            rules.Should().ContainSingle();
-            errors.Should().ContainSingle().Which.Should().StartWith("Line 3:");
+            RuleParser.Compile(definitions, errors).Should().ContainSingle();
+            errors.Should().ContainSingle().Which.Should().StartWith("Rule 2 (Broken):");
         }
 
         [Fact]
         [Trait("Category", "Unit")]
-        public void DefaultRules_ParseWithoutErrors()
+        public void SerializeDeserialize_RoundTrips()
         {
-            var errors = new List<string>();
+            var definitions = RuleParser.CreateDefaults();
+            definitions.Add(new RuleDefinition { Name = "Tab\tand\nnewline", Pattern = "a\tb|c", IgnoreCase = false, Style = 3 });
 
-            var rules = RuleParser.Parse(RuleParser.DefaultRules, errors);
+            var restored = RuleParser.Deserialize(RuleParser.Serialize(definitions));
 
-            errors.Should().BeEmpty();
-            rules.Should().ContainSingle();
+            restored.Should().HaveCount(4);
+            restored.Take(3).Should().BeEquivalentTo(RuleParser.CreateDefaults());
+            restored[3].Should().BeEquivalentTo(new RuleDefinition
+            {
+                Name = "Tab and newline", Pattern = @"a\tb|c", IgnoreCase = false, Style = 3,
+            });
+        }
+
+        [Fact]
+        [Trait("Category", "Unit")]
+        public void Deserialize_SkipsMalformedLines()
+        {
+            RuleParser.Deserialize("garbage\n\n1\t1\t1\tName\tlog\\.").Should().ContainSingle()
+                .Which.Pattern.Should().Be(@"log\.");
         }
     }
 }

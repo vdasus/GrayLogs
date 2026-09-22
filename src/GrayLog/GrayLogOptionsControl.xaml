@@ -1,0 +1,61 @@
+<UserControl x:Class="GrayLog.GrayLogOptionsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             vsui:ThemedDialogStyleLoader.UseDefaultThemedDialogStyles="True"
+             Padding="4">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <CheckBox x:Name="EnabledBox" Content="Dim lines that match the rules below" FontWeight="SemiBold" />
+            <TextBlock TextWrapping="Wrap" Margin="0,6,0,8">
+                Each rule is a regular expression. A matching line is dimmed as a whole; a call that continues
+                on the next lines is dimmed up to its closing parenthesis. If several rules match, the upper one wins.
+                Shortcut to switch dimming on and off: Ctrl+Alt+Shift+G (Tools &gt; Toggle GrayLog).
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom">
+            <TextBlock x:Name="ErrorsText" Foreground="#E0524E" TextWrapping="Wrap" Margin="0,4,0,0" />
+
+            <TextBlock Text="Try a line of code:" Margin="0,10,0,2" />
+            <TextBox x:Name="SampleBox" Text="_logger.LogInformation(&quot;Order {Id} processed&quot;, order.Id);"
+                     FontFamily="Consolas" TextChanged="OnInputChanged" />
+            <TextBlock x:Name="SampleResult" Margin="0,2,0,0" FontStyle="Italic" TextWrapping="Wrap" />
+
+            <TextBlock TextWrapping="Wrap" Margin="0,10,0,0">
+                Colors: Tools &gt; Options &gt; Environment &gt; Fonts and Colors, display items
+                "GrayLog - Style 1", "GrayLog - Style 2", "GrayLog - Style 3".
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Right" Margin="6,0,0,0" MinWidth="110">
+            <Button Content="Add rule" Click="OnAdd" Margin="0,0,0,4" Padding="8,2" />
+            <Button Content="Remove" Click="OnRemove" Margin="0,0,0,4" Padding="8,2" />
+            <Button Content="Move up" Click="OnMoveUp" Margin="0,0,0,4" Padding="8,2" />
+            <Button Content="Move down" Click="OnMoveDown" Margin="0,0,0,12" Padding="8,2" />
+            <Button Content="Reset to defaults" Click="OnReset" Padding="8,2" />
+        </StackPanel>
+
+        <DataGrid x:Name="RulesGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                  CanUserSortColumns="False" SelectionMode="Single" HeadersVisibility="Column" MinHeight="120"
+                  CellEditEnding="OnCellEditEnding">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="On" Binding="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Regular expression" Binding="{Binding Pattern}" Width="2*"
+                                    FontFamily="Consolas" />
+                <DataGridCheckBoxColumn Header="Ignore case" Binding="{Binding IgnoreCase, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridComboBoxColumn Header="Style" SelectedItemBinding="{Binding Style}">
+                    <DataGridComboBoxColumn.ItemsSource>
+                        <x:Array Type="sys:Int32">
+                            <sys:Int32>1</sys:Int32>
+                            <sys:Int32>2</sys:Int32>
+                            <sys:Int32>3</sys:Int32>
+                        </x:Array>
+                    </DataGridComboBoxColumn.ItemsSource>
+                </DataGridComboBoxColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

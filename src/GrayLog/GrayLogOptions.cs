@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
+using System.Windows;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -10,41 +9,54 @@ namespace GrayLog
     /// <summary>
     /// Tools > Options > GrayLog > General. Values live in <see cref="GrayLogSettings"/>, not in the page.
     /// </summary>
-    internal sealed class GrayLogOptions : DialogPage
+    internal sealed class GrayLogOptions : UIElementDialogPage
     {
-        [Category("GrayLog")]
-        [DisplayName("Rules")]
-        [Description("One regex per line. Optional prefix \"N: \" selects style slot 1..3 (default 1); " +
-                     "colors are in Environment > Fonts and Colors as \"GrayLog - Style N\". " +
-                     "Use (?i) for case-insensitive matching. Lines starting with '#' are comments.")]
-        [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
-        public string Rules { get; set; }
+        private GrayLogOptionsControl _control;
+
+        protected override UIElement Child => _control ?? (_control = CreateControl());
+
+        private static GrayLogOptionsControl CreateControl()
+        {
+            return new GrayLogOptionsControl { DimmingEnabled = GrayLogSettings.Enabled, Rules = GrayLogSettings.Definitions };
+        }
 
         public override void LoadSettingsFromStorage()
         {
-            Rules = GrayLogSettings.RulesText;
+            if (_control == null) return;
+            _control.DimmingEnabled = GrayLogSettings.Enabled;
+            _control.Rules = GrayLogSettings.Definitions;
         }
 
         public override void SaveSettingsToStorage()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            GrayLogSettings.Save(GrayLogSettings.Enabled, Rules);
+            if (_control != null) GrayLogSettings.Save(_control.DimmingEnabled, _control.Rules);
         }
 
         protected override void OnApply(PageApplyEventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var errors = new List<string>();
-            RuleParser.Parse(Rules, errors);
-            if (errors.Count > 0)
+            if (_control != null)
             {
-                VsShellUtilities.ShowMessageBox(Site, string.Join("\n", errors), "GrayLog: invalid rules",
-                    OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-                e.ApplyBehavior = ApplyKind.CancelNoNavigate;
-                return;
+                var errors = new List<string>();
+                RuleParser.Compile(_control.Rules, errors);
+                if (errors.Count > 0)
+                {
+                    VsShellUtilities.ShowMessageBox(Site, string.Join("\n", errors), "GrayLog: invalid rules",
+                        OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    e.ApplyBehavior = ApplyKind.CancelNoNavigate;
+                    return;
+                }
             }
 
             base.OnApply(e);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            // Discard unsaved edits (Cancel) and pick up changes made by the toggle command before the next opening.
+            LoadSettingsFromStorage();
+            base.OnClosed(e);
         }
     }
 }
