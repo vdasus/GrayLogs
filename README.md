@@ -4,6 +4,8 @@ Visual Studio 2026 extension that de-emphasizes lines matching configurable regu
 By default it dims logging calls such as `log.Info(...)`, `_logger.LogInformation(...)` and `Logger?.Warn(...)`,
 including multi-line calls up to the closing parenthesis.
 
+![GrayLog: extension off, extension on, options page](Docs/demo.gif)
+
 > **Disclaimer.** This is a personal project, written for the author's own use. It is provided "as is",
 > without warranty of any kind, and without support. Use it at your own risk.
 > Version 2.x was developed with an AI coding assistant (Claude Code) under the supervision of
